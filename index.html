@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adam Wallin – Music Composer & Sound Designer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111111;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --accent: #e8e8e8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 40px;
+      background: rgba(17,17,17,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    nav.scrolled { border-bottom-color: var(--border); }
+
+    .nav-logo {
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text); }
+
+    /* ── PAGE SECTIONS ── */
+    .page { padding-top: 80px; }
+
+    section { display: none; }
+    section.active { display: block; }
+
+    /* ── WORK SECTION ── */
+    .filter-bar {
+      display: flex;
+      gap: 0;
+      padding: 24px 40px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .filter-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      padding: 6px 0;
+      margin-right: 28px;
+      border-bottom: 1px solid transparent;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .filter-btn:hover { color: var(--text); }
+    .filter-btn.active { color: var(--text); border-bottom-color: var(--text); }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-top: 1px solid var(--border);
+    }
+
+    .grid-item {
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: block;
+    }
+
+    .grid-item[style*="none"] { display: none; }
+
+    .thumb-wrap {
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      position: relative;
+      background: var(--surface);
+    }
+
+    .thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s;
+      opacity: 0.85;
+    }
+
+    .grid-item:hover .thumb-wrap img {
+      transform: scale(1.04);
+      opacity: 1;
+    }
+
+    .grid-item-info {
+      padding: 16px 20px 20px;
+    }
+
+    .grid-item-cat {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .grid-item-title {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+    }
+
+    /* play icon overlay */
+    .play-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      backdrop-filter: blur(4px);
+    }
+
+    .play-icon::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 8px 0 8px 16px;
+      border-color: transparent transparent transparent #fff;
+      margin-left: 3px;
+    }
+
+    .grid-item:hover .play-icon {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* ── ABOUT SECTION ── */
+    .about-wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 80px 40px;
+    }
+
+    .about-wrap h2 {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: 32px;
+      color: var(--muted);
+    }
+
+    .contact-block p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .contact-block a {
+      color: var(--text);
+      transition: color 0.2s;
+    }
+
+    .contact-block a:hover { color: var(--muted); }
+
+    .contact-block .location {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── VIDEO MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-inner {
+      width: min(900px, 92vw);
+      position: relative;
+    }
+
+    .modal-video {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+    }
+
+    .modal-video iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover { color: var(--text); }
+
+    .modal-meta {
+      padding: 16px 0 0;
+    }
+
+    .modal-cat {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 20px 24px; }
+      .filter-bar { padding: 16px 24px; }
+      .grid { grid-template-columns: 1fr; }
+      .about-wrap { padding: 48px 24px; }
+      footer { padding: 20px 24px; flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav">
+    <span class="nav-logo">Adam Wallin</span>
+    <ul class="nav-links">
+      <li><a href="#" class="nav-link active" data-section="work">Work</a></li>
+      <li><a href="#" class="nav-link" data-section="about">About</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+
+    <!-- ── WORK ── -->
+    <section id="work" class="active">
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">Featured</button>
+        <button class="filter-btn" data-filter="music">Music Composition</button>
+        <button class="filter-btn" data-filter="sound">Sound Design</button>
+        <button class="filter-btn" data-filter="both">Music Composition + Sound Design</button>
+      </div>
+
+      <div class="grid" id="project-grid">
+
+        <!-- Items: data-cat = music | sound | both -->
+
+        <div class="grid-item" data-cat="both" data-title="Roborock Saros 10 – Party Scene" data-url="https://www.adamwallinsound.com/work/v/roborock-saros-10-party-scene">
+          <div class="thumb-wrap">
+            <img src="https://video.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/d5084efa-1f3f-45ce-afc7-fab62253ee9e/thumbnail" alt="Roborock Saros 10"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition + Sound Design</p>
+            <p class="grid-item-title">Roborock Saros 10 – Party Scene</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-title="PUBG: Battlegrounds – Cinematic Trailer" data-url="https://www.adamwallinsound.com/work/v/pubg-battlegrounds-cinematic-trailer">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/5772e1d9-26d9-46ac-a3ac-2f8d056315dd/Screenshot+2024-08-27+at+18.11.45.png" alt="PUBG"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">PUBG: Battlegrounds – Cinematic Trailer</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="both" data-title="Faxe Kondi Pro" data-url="https://www.adamwallinsound.com/work/v/faxe-kondi-pro">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/de089314-cb39-4630-ba52-bf3d2b060f07/Screenshot+2024-08-27+at+18.00.16.png" alt="Faxe Kondi"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition + Sound Design</p>
+            <p class="grid-item-title">Faxe Kondi Pro</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="sound" data-title="Cronos: The New Dawn – Official Cinematic Reveal Trailer" data-url="https://www.adamwallinsound.com/work/v/cronos-the-new-dawn-official-cinematic-reveal-trailer">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/5a680d3b-e6d2-4864-b567-b6b479bc8c6f/Screenshot+2024-10-18+at+11.40.27.png" alt="Cronos"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Sound Design</p>
+            <p class="grid-item-title">Cronos: The New Dawn – Official Cinematic Reveal Trailer</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="both" data-title="Zeekr 2" data-url="https://www.adamwallinsound.com/work/v/zeekr-2">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/f53071c2-2f64-4d75-a503-c26b4d02302e/Screenshot+2024-08-27+at+17.57.34.png" alt="Zeekr 2"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition + Sound Design</p>
+            <p class="grid-item-title">Zeekr 2</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-title="Lineage – Cinematic Trailer" data-url="https://www.adamwallinsound.com/work/v/lineage-cinematic-trailer">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/ce59af39-fc74-449d-8405-960ac733d1e9/Screenshot+2024-08-27+at+18.45.41.png" alt="Lineage"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">Lineage – Cinematic Trailer</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="both" data-title="Philips One Brush – Mango" data-url="https://www.adamwallinsound.com/work/v/shrwmay3shdw5bsygy6tdfnc3e7a2p">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/b6ac2aa4-4a89-4d90-a77a-cf43c3c49c61/Screenshot+2024-08-27+at+18.50.19.png" alt="Philips Mango" onerror="this.src='https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/b6ac2a4-4a89-4d90-a77a-cf43c3c49c61/Screenshot+2024-08-27+at+18.50.19.png'"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition + Sound Design</p>
+            <p class="grid-item-title">Philips One Brush – Mango</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-title="Roborock – Black Week" data-url="https://www.adamwallinsound.com/work/v/roborock-black-week">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/251a9b70-01aa-44b1-8f90-560805cd6749/Screenshot+2024-08-28+at+15.32.06.png" alt="Roborock Black Week"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">Roborock – Black Week</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="both" data-title="Zeekr 1" data-url="https://www.adamwallinsound.com/work/v/zeekr-001-commercial-1">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/c3a18465-230f-4d16-b6eb-d11440a0223a/Screenshot+2024-08-30+at+10.23.36.png" alt="Zeekr 1"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition + Sound Design</p>
+            <p class="grid-item-title">Zeekr 1</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="sound" data-title="Sandqvist – Rain" data-url="https://www.adamwallinsound.com/work/v/sandqvist-rain">
+          <div class="thumb-wrap">
+            <img src="https://video.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/202b03f6-f00c-4f80-95d5-3b5cedbf82fc/thumbnail" alt="Sandqvist Rain"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Sound Design</p>
+            <p class="grid-item-title">Sandqvist – Rain</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="both" data-title="Philips One Brush (Midnight)" data-url="https://www.adamwallinsound.com/work/v/philips-one-brush-midnight">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/08c9109d-39b6-49f6-88af-42e6b38f5a48/Screenshot+2024-08-30+at+10.20.22.png" alt="Philips Midnight"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition + Sound Design</p>
+            <p class="grid-item-title">Philips One Brush (Midnight)</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="sound" data-title="Sandqvist – Bike" data-url="https://www.adamwallinsound.com/work/v/sandqvist-bike">
+          <div class="thumb-wrap">
+            <img src="https://video.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/fe983846-4d5d-4241-b02e-27d9766c928b/thumbnail" alt="Sandqvist Bike"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Sound Design</p>
+            <p class="grid-item-title">Sandqvist – Bike</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-ytid="Bn2yzQiH61U" data-title="OVERKILL's The Walking Dead – Maya Trailer" data-url="https://www.youtube.com/watch?v=Bn2yzQiH61U">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/Bn2yzQiH61U/hqdefault.jpg" alt="Maya Trailer"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">OVERKILL's The Walking Dead – Maya Trailer</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-ytid="zwySqKsdm50" data-title="OVERKILL's The Walking Dead – Aidan: The First Trailer" data-url="https://www.youtube.com/watch?v=zwySqKsdm50">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/zwySqKsdm50/hqdefault.jpg" alt="Aidan Trailer"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">OVERKILL's The Walking Dead – Aidan: The First Trailer</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-ytid="aYAZ3_B4PL4" data-title="OVERKILL's The Walking Dead – Heather Trailer" data-url="https://www.youtube.com/watch?v=aYAZ3_B4PL4">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/aYAZ3_B4PL4/hqdefault.jpg" alt="Heather Trailer"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">OVERKILL's The Walking Dead – Heather Trailer</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-ytid="5zh_rtxS1Jk" data-title="OVERKILL's The Walking Dead – Cinematic Launch Trailer" data-url="https://www.youtube.com/watch?v=5zh_rtxS1Jk">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/5zh_rtxS1Jk/hqdefault.jpg" alt="Launch Trailer"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">OVERKILL's The Walking Dead – Cinematic Launch Trailer</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-ytid="ATtcrtvgZy0" data-title="OVERKILL's The Walking Dead – Grant Trailer" data-url="https://www.youtube.com/watch?v=ATtcrtvgZy0">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/ATtcrtvgZy0/hqdefault.jpg" alt="Grant Trailer"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">OVERKILL's The Walking Dead – Grant Trailer</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="both" data-title="H&M – Creator Studio" data-url="https://www.adamwallinsound.com/work/v/hm-creator-studio">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/2328d87e-6653-4d83-b8eb-436aca830043/Screenshot+2023-02-01+at+19.11.05.png" alt="H&M"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition + Sound Design</p>
+            <p class="grid-item-title">H&M – Creator Studio</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="both" data-title="GP Bullhound" data-url="https://www.adamwallinsound.com/work/v/gp-bullhound">
+          <div class="thumb-wrap">
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/3fef574d-aecd-488e-96dd-8e20efeba554/Screenshot+2023-03-28+at+13.00.05.png" alt="GP Bullhound"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition + Sound Design</p>
+            <p class="grid-item-title">GP Bullhound</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="both" data-ytid="CQ3gpfOh2ZM" data-title="Roborock S8 Series" data-url="https://www.youtube.com/watch?v=CQ3gpfOh2ZM">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/CQ3gpfOh2ZM/hqdefault.jpg" alt="Roborock S8"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition + Sound Design</p>
+            <p class="grid-item-title">Roborock S8 Series</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-ytid="h6IvgxUPzKY" data-title="Volvo Vintersaga – Rescore" data-url="https://www.youtube.com/watch?v=h6IvgxUPzKY">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/h6IvgxUPzKY/hqdefault.jpg" alt="Volvo"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">Volvo Vintersaga – Rescore</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-ytid="gRV9QdxP014" data-title="Samsung Galaxy S10 – Rescore" data-url="https://www.youtube.com/watch?v=gRV9QdxP014">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/gRV9QdxP014/hqdefault.jpg" alt="Samsung"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">Samsung Galaxy S10 – Rescore</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-ytid="g8_VJFlqPhs" data-title="Boosted Board Mini S – Rescore" data-url="https://www.youtube.com/watch?v=g8_VJFlqPhs">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/g8_VJFlqPhs/hqdefault.jpg" alt="Boosted Board"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">Boosted Board Mini S – Rescore</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-ytid="QgPMyvZMBY0" data-title="State Zero – Post Apocalyptic Short" data-url="https://www.youtube.com/watch?v=QgPMyvZMBY0">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/QgPMyvZMBY0/hqdefault.jpg" alt="State Zero"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">State Zero – Post Apocalyptic Short</p>
+          </div>
+        </div>
+
+        <div class="grid-item" data-cat="music" data-title="Redemption – Trailer" data-url="https://www.adamwallinsound.com/work/v/redemption-trailer">
+          <div class="thumb-wrap">
+            <img src="https://video.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/4764709a-dfac-4654-95c7-fd736ea7288a/thumbnail" alt="Redemption"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition</p>
+            <p class="grid-item-title">Redemption – Trailer</p>
+          </div>
+        </div>
+
+      </div><!-- /grid -->
+    </section>
+
+    <!-- ── ABOUT ── -->
+    <section id="about">
+      <div class="about-wrap">
+        <h2>Contact</h2>
+        <div class="contact-block">
+          <p><a href="mailto:c.adamwallin@gmail.com">c.adamwallin@gmail.com</a></p>
+          <p><a href="tel:+46702375641">+46 70-237 56 41</a></p>
+          <p class="location">Stockholm, Sweden</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── VIDEO MODAL ── -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-inner">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-video" id="modal-video"></div>
+      <div class="modal-meta">
+        <p class="modal-cat" id="modal-cat"></p>
+        <p class="modal-title" id="modal-title"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-name">© 2025 Adam Wallin</span>
+    <div class="footer-links">
+      <a href="mailto:c.adamwallin@gmail.com">Email</a>
+      <a href="tel:+46702375641">Phone</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── NAV SECTION TOGGLE ──
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = link.dataset.section;
+        navLinks.forEach(l => l.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
+        link.classList.add('active');
+        document.getElementById(target).classList.add('active');
+        window.scrollTo({ top: 0 });
+      });
+    });
+
+    // Scrolled nav border
+    window.addEventListener('scroll', () => {
+      document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // ── FILTER ──
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const gridItems = document.querySelectorAll('.grid-item');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        gridItems.forEach(item => {
+          const cat = item.dataset.cat;
+          const show = filter === 'all' || cat === filter ||
+            (filter === 'music' && cat === 'music') ||
+            (filter === 'sound' && cat === 'sound') ||
+            (filter === 'both' && cat === 'both');
+          item.style.display = show ? 'block' : 'none';
+        });
+      });
+    });
+
+    // ── MODAL ──
+    const modal = document.getElementById('modal');
+    const modalVideo = document.getElementById('modal-video');
+    const modalTitle = document.getElementById('modal-title');
+    const modalCat = document.getElementById('modal-cat');
+
+    function openModal(ytid, title, cat, fallbackUrl) {
+      if (ytid) {
+        modalVideo.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytid}?autoplay=1&rel=0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+      } else {
+        // No YouTube ID — open the original URL instead
+        window.open(fallbackUrl, '_blank');
+        return;
+      }
+      modalTitle.textContent = title;
+      modalCat.textContent = cat;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modalVideo.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    gridItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const ytid = item.dataset.ytid || '';
+        const title = item.dataset.title;
+        const cat = item.querySelector('.grid-item-cat').textContent;
+        const url = item.dataset.url;
+        openModal(ytid, title, cat, url);
+      });
+    });
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+</body>
+</html>
