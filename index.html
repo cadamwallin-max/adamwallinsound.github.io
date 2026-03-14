@@ -4,17 +4,17 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Adam Wallin – Music Composer & Sound Designer</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #111111;
-      --surface: #1a1a1a;
-      --border: #2a2a2a;
-      --text: #e8e8e8;
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #111111;
       --muted: #888;
-      --accent: #e8e8e8;
+      --accent: #111111;
     }
 
     html { scroll-behavior: smooth; }
@@ -22,7 +22,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 300;
       font-size: 14px;
       line-height: 1.6;
@@ -39,7 +39,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 24px 40px;
-      background: rgba(17,17,17,0.92);
+      background: rgba(255,255,255,0.95);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid transparent;
       transition: border-color 0.3s;
@@ -48,9 +48,11 @@
     nav.scrolled { border-bottom-color: var(--border); }
 
     .nav-logo {
-      font-weight: 400;
-      font-size: 14px;
-      letter-spacing: 0.05em;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
     .nav-links {
@@ -61,8 +63,11 @@
 
     .nav-links a {
       color: var(--muted);
-      font-size: 13px;
-      letter-spacing: 0.04em;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       transition: color 0.2s;
     }
 
@@ -435,7 +440,7 @@
 
         <div class="grid-item" data-cat="both" data-title="Philips One Brush – Mango" data-url="https://www.adamwallinsound.com/work/v/shrwmay3shdw5bsygy6tdfnc3e7a2p">
           <div class="thumb-wrap">
-            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/b6ac2aa4-4a89-4d90-a77a-cf43c3c49c61/Screenshot+2024-08-27+at+18.50.19.png" alt="Philips Mango" onerror="this.src='https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/b6ac2a4-4a89-4d90-a77a-cf43c3c49c61/Screenshot+2024-08-27+at+18.50.19.png'"/>
+            <img src="https://images.squarespace-cdn.com/content/v1/63a869ecba50b45f3a12e022/b6ac2aa4-4a89-4d90-a77a-cf43c3c49c61/Screenshot+2024-08-27+at+18.50.19.png" alt="Philips Mango" onerror="this.style.display='none'"/>
             <div class="play-icon"></div>
           </div>
           <div class="grid-item-info">
@@ -643,6 +648,23 @@
         </div>
 
       </div><!-- /grid -->
+
+      <!-- ═══════════════════════════════════════════════════
+           MALL FÖR NYTT PROJEKT — kopiera detta blocket:
+
+        <div class="grid-item" data-cat="both" data-ytid="DITT_YOUTUBE_ID" data-title="Projektnamn" data-url="">
+          <div class="thumb-wrap">
+            <img src="https://i.ytimg.com/vi/DITT_YOUTUBE_ID/hqdefault.jpg" alt="Projektnamn"/>
+            <div class="play-icon"></div>
+          </div>
+          <div class="grid-item-info">
+            <p class="grid-item-cat">Music Composition + Sound Design</p>
+            <p class="grid-item-title">Projektnamn</p>
+          </div>
+        </div>
+
+        data-cat kan vara: music | sound | both
+      ═══════════════════════════════════════════════════ -->
     </section>
 
     <!-- ── ABOUT ── -->
@@ -650,7 +672,7 @@
       <div class="about-wrap">
         <h2>Contact</h2>
         <div class="contact-block">
-          <p><a href="mailto:c.adamwallin@gmail.com">c.adamwallin@gmail.com</a></p>
+          <p><a href="/cdn-cgi/l/email-protection#accf82cdc8cdc1dbcdc0c0c5c2eccbc1cdc5c082cfc3c1"><span class="__cf_email__" data-cfemail="03602d6267626e74626f6f6a6d43646e626a6f2d606c6e">[email&#160;protected]</span></a></p>
           <p><a href="tel:+46702375641">+46 70-237 56 41</a></p>
           <p class="location">Stockholm, Sweden</p>
         </div>
@@ -674,12 +696,12 @@
   <footer>
     <span class="footer-name">© 2025 Adam Wallin</span>
     <div class="footer-links">
-      <a href="mailto:c.adamwallin@gmail.com">Email</a>
+      <a href="/cdn-cgi/l/email-protection#6f0c410e0b0e02180e030306012f08020e0603410c0002">Email</a>
       <a href="tel:+46702375641">Phone</a>
     </div>
   </footer>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // ── NAV SECTION TOGGLE ──
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('section');
@@ -755,11 +777,3 @@
         const url = item.dataset.url;
         openModal(ytid, title, cat, url);
       });
-    });
-
-    document.getElementById('modal-close').addEventListener('click', closeModal);
-    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-  </script>
-</body>
-</html>
